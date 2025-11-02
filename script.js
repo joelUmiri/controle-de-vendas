@@ -8,16 +8,14 @@ const tabelaContainer = document.getElementById('tabelaContainer');
 let totalGeral = 0;
 const registros = [];
 
-// Carregar dados salvos com data real
 if (localStorage.getItem('registros')) {
   const saved = JSON.parse(localStorage.getItem('registros'));
   saved.forEach(r => {
-    const data = new Date(r.data); // Reconstrói a data real
+    const data = new Date(r.data); 
     adicionarLinha(r.qtd, r.tipo, r.valor, r.observacao, data);
   });
 }
 
-// Mostrar/Ocultar tabela
 mostrarBtn.addEventListener('click', () => {
   tabelaContainer.classList.add('visible');
   mostrarBtn.style.display = 'none';
@@ -46,7 +44,6 @@ form.addEventListener('submit', (e) => {
 
   adicionarLinha(qtd, tipo, valor, observacao, data);
 
-  // Salvar com data em ISO
   registros.push({ qtd, tipo, valor, observacao, data: data.toISOString() });
   localStorage.setItem('registros', JSON.stringify(registros));
 
@@ -63,7 +60,6 @@ function adicionarLinha(qtd, tipo, valor, observacao, data) {
   const tipoFormatado = tipo.charAt(0).toUpperCase() + tipo.slice(1);
   const subtotalFmt = subtotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
   
-  // Formatar data/hora
   const dataFmt = data.toLocaleString('pt-BR', {
     day: '2-digit',
     month: '2-digit',
@@ -87,7 +83,6 @@ function adicionarLinha(qtd, tipo, valor, observacao, data) {
   atualizarTotalGeral();
 }
 
-// Função global para excluir
 function excluirLinha(botao, subtotal) {
   const tr = botao.closest('tr');
   const index = Array.from(tabelaBody.children).indexOf(tr);
@@ -101,7 +96,6 @@ function excluirLinha(botao, subtotal) {
     totalGeral -= subtotal;
     atualizarTotalGeral();
 
-    // Remove do array e localStorage
     registros.splice(index, 1);
     localStorage.setItem('registros', JSON.stringify(registros));
   }, 300);
